@@ -11,6 +11,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import com.dgz3.component.jsontab.JsonTab;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -20,6 +21,8 @@ import javafx.scene.Scene;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -27,6 +30,41 @@ public class UberUte extends Application {
 
     @Override
     public void start(Stage stage) {
+
+        /*
+        TODO initialize DB connection
+         */
+
+
+        TabPane tabPane = new TabPane(
+            /* return spec tabs here */
+            /*
+            1. mp3
+            2. mp4
+            3. json
+            4. rss
+            5. ???
+             */
+            new JsonTab(stage).getTab()
+        );
+
+        /* TODO: add commandline params */
+        stage.setMinHeight(300);
+        stage.setMinWidth(400);
+
+        stage.setScene(new Scene(tabPane));
+        stage.show();
+    }
+
+    public static void main(String[] args) {
+
+        /* TODO parse args */
+
+        launch();
+    }
+
+    void runError()
+    {
         Properties buildProps = new Properties();
         try(InputStream input = getClass().getResourceAsStream("/build.properties"))
         {
@@ -42,8 +80,13 @@ public class UberUte extends Application {
                 ,exception.getMessage()
             );
         }
+    }
+}
 
-                var javaVersion = SystemInfo.javaVersion();
+
+
+/*
+        var javaVersion = SystemInfo.javaVersion();
         var javafxVersion = SystemInfo.javafxVersion();
 
         var btn = new Button("httpclient");
@@ -73,7 +116,7 @@ public class UberUte extends Application {
                         // System.out.println(elem.data().substring(index,50));
 
                         ObjectMapper mapper = new ObjectMapper();
-                        int index = elem.data().indexOf("{"); /* strip js 'var x = ' */
+                        int index = elem.data().indexOf("{");               // strip js 'var x = ' 
                         String json = elem.data().substring(index, elem.data().length()-1);
 
                         JsonNode rootNode = mapper.readTree(json);
@@ -147,45 +190,43 @@ public class UberUte extends Application {
 
 
 
-/* 
-                            int nodeCount=0;
-                            for( var node : contents){
+                            // int nodeCount=0;
+                            // for( var node : contents){
 
 
 
-                                System.out.println(++nodeCount);
-                                if (nodeCount == 3){
-                                    System.out.println(node.toString());
-                                    break;
-                                }
+                            //     System.out.println(++nodeCount);
+                            //     if (nodeCount == 3){
+                            //         System.out.println(node.toString());
+                            //         break;
+                            //     }
 
-                                System.out.println(
-                                    node.at("/videoRenderer/videoId")
-                                );
-                                System.out.println(
-                                    node.at("/videoRenderer/title/runs/0/text")
-                                );
-                                System.out.println(
-                                    node.at("/videoRenderer/publishedTimeText/simpleText")
-                                );
-                                System.out.println(
-                                    node.at("/videoRenderer/lengthText/simpleText")
-                                );
-                                System.out.println(
-                                    node.at("/videoRenderer/shortViewCountText/simpleText")
-                                );
-                                System.out.println(
-                                    node.at("/videoRenderer/ownerText/runs/0/text")
-                                );
-                                System.out.println(
-                                    node.at("/videoRenderer/ownerText/runs/0/navigationEndpoint/commandMetadata/webCommandMetaData/url")
-                                );
-                                System.out.println(
-                                    node.at("/videoRenderer/thumbnail/thumbnails/0/url")
-                                );
-                                System.out.println("-------------------------------------------");
-                            }
-*/
+                            //     System.out.println(
+                            //         node.at("/videoRenderer/videoId")
+                            //     );
+                            //     System.out.println(
+                            //         node.at("/videoRenderer/title/runs/0/text")
+                            //     );
+                            //     System.out.println(
+                            //         node.at("/videoRenderer/publishedTimeText/simpleText")
+                            //     );
+                            //     System.out.println(
+                            //         node.at("/videoRenderer/lengthText/simpleText")
+                            //     );
+                            //     System.out.println(
+                            //         node.at("/videoRenderer/shortViewCountText/simpleText")
+                            //     );
+                            //     System.out.println(
+                            //         node.at("/videoRenderer/ownerText/runs/0/text")
+                            //     );
+                            //     System.out.println(
+                            //         node.at("/videoRenderer/ownerText/runs/0/navigationEndpoint/commandMetadata/webCommandMetaData/url")
+                            //     );
+                            //     System.out.println(
+                            //         node.at("/videoRenderer/thumbnail/thumbnails/0/url")
+                            //     );
+                            //     System.out.println("-------------------------------------------");
+                            // }
 
                         }
 
@@ -203,9 +244,4 @@ public class UberUte extends Application {
         stage.setScene(scene);
         stage.show();
 
-    }
-
-    public static void main(String[] args) {
-        launch();
-    }
-}
+*/
