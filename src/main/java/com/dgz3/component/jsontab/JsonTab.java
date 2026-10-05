@@ -20,13 +20,12 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class JsonTab implements Observer
+public class JsonTab extends Tab implements Observer
 {
-    private final String TAB_NAME = "JSON";
+    private static final String TAB_NAME = "JSON";
 
-    private Stage stage;
-    private Tab tab;
-    private TabPane tabPane;
+    private final Stage stage;
+    private final TabPane tabPane;
     private Label fileLabel;
     private TextField fileTextField;
     private JsonFileChooserButton jsonFileSelector;
@@ -35,12 +34,12 @@ public class JsonTab implements Observer
 
     public JsonTab(Stage _stage)
     {
+        super(TAB_NAME);
         stage = _stage;
         tabPane = new TabPane( createNewTab() );
 
-        tab = new Tab(TAB_NAME);
-        tab.setClosable(false);
-        tab.setContent(tabPane);
+        this.setClosable(false);
+        this.setContent(tabPane);
         tabs = tabPane.getTabs();
     }
 
@@ -98,8 +97,6 @@ public class JsonTab implements Observer
     { 
         tabs.add( createNewTab() ); 
     }
-
-    public Tab getTab() { return tab; }
 
     public String DEBUG_BORDER(String color)
     {

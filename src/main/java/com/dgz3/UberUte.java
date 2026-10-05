@@ -1,29 +1,13 @@
 package com.dgz3;
 
 import java.io.InputStream;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.Properties;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-
 import com.dgz3.component.jsontab.JsonTab;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class UberUte extends Application {
@@ -45,7 +29,7 @@ public class UberUte extends Application {
             4. rss
             5. ???
              */
-            new JsonTab(stage).getTab()
+            new JsonTab(stage)
         );
 
         /* TODO: add commandline params */
