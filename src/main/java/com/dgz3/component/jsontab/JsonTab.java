@@ -1,143 +1,114 @@
 package com.dgz3.component.jsontab;
 
-import com.dgz3.component.jsontab.component.JsonFileChooserButton;
+import java.io.File;
 
+import com.dgz3.component.jsontab.component.JsonFileChooserButton;
+import com.dgz3.pattern.Observer;
+
+import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+public class JsonTab implements Observer
+{
+    private final String TAB_NAME = "JSON";
 
-public class JsonTab {
+    private Stage stage;
+    private Tab tab;
+    private TabPane tabPane;
+    private Label fileLabel;
+    private TextField fileTextField;
+    private JsonFileChooserButton jsonFileSelector;
+
+    private ObservableList<Tab> tabs;
+
+    public JsonTab(Stage _stage)
+    {
+        stage = _stage;
+        tabPane = new TabPane( createNewTab() );
+
+        tab = new Tab(TAB_NAME);
+        tab.setClosable(false);
+        tab.setContent(tabPane);
+        tabs = tabPane.getTabs();
+    }
+
+    private Tab createNewTab()
+    {
+        Tab newTab = new Tab("New Tab");
+
+        Text gridTitle = new Text("Select a file");
+        gridTitle.setFont(Font.font("Ariel", FontWeight.NORMAL, 20));
+
+        fileLabel = new Label("File selected");
+
+        fileTextField = new TextField();
+        fileTextField.setDisable(true);
+
+        jsonFileSelector = new JsonFileChooserButton(stage);
+        jsonFileSelector.addObserver(this);
+
+        HBox buttonBox = new HBox(
+            jsonFileSelector,new Button("Load")
+        );
+        buttonBox.setAlignment(Pos.CENTER_RIGHT);
+        buttonBox.setSpacing(10);
+
+        GridPane selectorGridPane = new GridPane();
+        selectorGridPane.setAlignment(Pos.CENTER);
+        selectorGridPane.setHgap(10);
+        selectorGridPane.setVgap(10);
+        selectorGridPane.setPadding(new Insets(5,5,5,5));
+        // selectorGridPane.setGridLinesVisible(true);                             /* debug */ 
+
+        selectorGridPane.add(gridTitle, 0, 0, 2, 1);
+        selectorGridPane.add(fileLabel, 0, 1);
+        selectorGridPane.add(fileTextField, 1, 1);
+        selectorGridPane.add(
+            buttonBox,1,2
+        );
+
+        newTab.setClosable(false);
+        newTab.setContent(
+            selectorGridPane
+        );
+        return(newTab);
+    }
+
+    @Override 
+    public void update(Object o)
+    {
+        if (o != null){
+            fileTextField.setText(((File)o).getName());
+        }
+    }
+
+    public void addNewTab() 
+    { 
+        tabs.add( createNewTab() ); 
+    }
+
+    public Tab getTab() { return tab; }
 
     public String DEBUG_BORDER(String color)
     {
-        String format = "-fx-border-color: %s; -fx-border-width: 1; -fx-border-style: solid;";
+        String format = 
+            "-fx-border-color: %s;"+ 
+            "-fx-border-width: 1;" +
+            "-fx-border-style: solid;";
         return(
             String.format( format, color )
         );
     }
-
-    private final String TAB_NAME = "JSON";
-
-    private Tab tab;
-    private JsonFileChooserButton jsonFileSelector;
-
-    public JsonTab(Stage stage)
-    {
-        jsonFileSelector = new JsonFileChooserButton(stage);
-
-        TabPane pt = new TabPane(
-                new Tab("1")
-                ,new Tab("2")
-                ,new Tab("3")
-                ,new Tab("4")
-                ,new Tab("5")
-                ,new Tab("6")
-                ,new Tab("7")
-                ,new Tab("8")
-                ,new Tab("9")
-                ,new Tab("10")
-                ,new Tab("1")
-                ,new Tab("2")
-                ,new Tab("3")
-                ,new Tab("4")
-                ,new Tab("5")
-                ,new Tab("6")
-                ,new Tab("7")
-                ,new Tab("8")
-                ,new Tab("9")
-                ,new Tab("10")
-                ,new Tab("1")
-                ,new Tab("2")
-                ,new Tab("3")
-                ,new Tab("4")
-                ,new Tab("5")
-                ,new Tab("6")
-                ,new Tab("7")
-                ,new Tab("8")
-                ,new Tab("9")
-                ,new Tab("10")
-                ,new Tab("1")
-                ,new Tab("2")
-                ,new Tab("3")
-                ,new Tab("4")
-                ,new Tab("5")
-                ,new Tab("6")
-                ,new Tab("7")
-                ,new Tab("8")
-                ,new Tab("9")
-                ,new Tab("10")
-                ,new Tab("2")
-                ,new Tab("3")
-                ,new Tab("4")
-                ,new Tab("5")
-                ,new Tab("6")
-                ,new Tab("7")
-                ,new Tab("8")
-                ,new Tab("9")
-                ,new Tab("10")
-                ,new Tab("1")
-                ,new Tab("2")
-                ,new Tab("3")
-                ,new Tab("4")
-                ,new Tab("5")
-                ,new Tab("6")
-                ,new Tab("7")
-                ,new Tab("8")
-                ,new Tab("9")
-                ,new Tab("10")
-                ,new Tab("1")
-                ,new Tab("2")
-                ,new Tab("3")
-                ,new Tab("4")
-                ,new Tab("5")
-                ,new Tab("6")
-                ,new Tab("7")
-                ,new Tab("8")
-                ,new Tab("9")
-                ,new Tab("10")
-                ,new Tab("1")
-                ,new Tab("2")
-                ,new Tab("3")
-                ,new Tab("4")
-                ,new Tab("5")
-                ,new Tab("6")
-                ,new Tab("7")
-                ,new Tab("8")
-                ,new Tab("9")
-                ,new Tab("10")
-            );
-            pt.getTabs().add(new Tab("new tab test"));
-
-        VBox vbox = new VBox(
-
-            pt
-
-        );
-
-        vbox.setAlignment(Pos.CENTER);
-        vbox.setFillWidth(true);
-        vbox.setStyle(DEBUG_BORDER("red"));
-
-        tab = new Tab(TAB_NAME);
-        tab.setClosable(false);
-        tab.setContent(vbox);
-    }
-
-    public Tab getTab() { return tab; }
 }
-
-        // HBox hbox = new HBox(
-        //     new Button("button1")
-        //     ,new Button("button2")
-        //     ,new Button("button3")
-        // );
-        // hbox.setAlignment(Pos.CENTER);
-        // hbox.setStyle(DEBUG_BORDER("green"));
-
-        // Button btn = new Button("button4");
-        // btn.setStyle("-fx-max-width: infinity;");
-
-        // FileInputStream input = new FileInputStream(selectedFile);

@@ -52,6 +52,7 @@ public class UberUte extends Application {
         stage.setMinHeight(300);
         stage.setMinWidth(400);
 
+        stage.setTitle("TITLE");
         stage.setScene(new Scene(tabPane));
         stage.show();
     }
