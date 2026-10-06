@@ -1,6 +1,5 @@
 package com.dgz3.component.jsontab.component;
 
-
 import javafx.event.EventHandler;
 
 import java.io.File;
@@ -20,7 +19,7 @@ public class JsonFileChooserButton extends Button implements Subject
 {
     List<Observer> observers = new ArrayList<Observer>();
 
-    private final String BUTTON_LABEL = "Choose...";
+    private final String BUTTON_LABEL = "Choose";
 
     public JsonFileChooserButton(Stage stage) 
     {
