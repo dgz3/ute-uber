@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dgz3.component.jsontab.model.Track;
+import com.dgz3.component.jsontab.service.FileJsonParseService;
 import com.dgz3.pattern.Observer;
 import com.dgz3.pattern.Subject;
 
@@ -102,6 +104,21 @@ public class JsonFileTab extends Tab implements Subject
         for (var observer : observers){
             observer.update( null );
         }
+    }
+
+    private void parseFile()
+    {
+        if (selectedFile != null) {
+            FileJsonParseService service = new FileJsonParseService();
+            List<Track> tracks = service.parse(selectedFile);
+            for (var track : tracks){
+                System.out.printf(
+                    "name: %s\nartist: %s\nalbum: %s\nduration: %s\n"
+                    // ,track.getName(),track.getArtist(),track.getAlbum(),track.getDuration()
+                    ,track.name(),track.artist(),track.album(),track.duration()
+                );
+            }
+        }
         this.setText(selectedFile.getName());
         this.setClosable(true);
     }
@@ -124,6 +141,7 @@ public class JsonFileTab extends Tab implements Subject
         public void update(Object o)
         {
             System.out.println(selectedFile.getName());
+            parseFile();
             notifyObserver();
         }
     }
