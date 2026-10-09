@@ -1,8 +1,11 @@
 package com.dgz3.component.jsontab.component;
 
 import java.io.File;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+
 
 import com.dgz3.component.jsontab.model.Track;
 import com.dgz3.component.jsontab.service.FileJsonParseService;
@@ -10,21 +13,24 @@ import com.dgz3.pattern.Observer;
 import com.dgz3.pattern.Subject;
 
 import javafx.geometry.Pos;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -140,13 +146,54 @@ public class JsonFileTab extends Tab implements Subject
         albumCol.setCellValueFactory(new PropertyValueFactory<>("album"));
         TableColumn<Track,String> durationCol = new TableColumn<>("Duration");
         durationCol.setCellValueFactory(new PropertyValueFactory<>("duration"));
-        table.getColumns().addAll(nameCol,artistCol,albumCol,durationCol);
+
+        TableColumn<Track,String> linkCol = new TableColumn<>("Link");
+        linkCol.setCellValueFactory( rowdata -> {
+            Track track = rowdata.getValue();
+
+            SimpleStringProperty link = new SimpleStringProperty(
+                "https://www.youtube.com/results?search_query=" +
+                URLEncoder.encode(track.getName(),StandardCharsets.UTF_8) +
+                "+" +
+                URLEncoder.encode(track.getArtist(),StandardCharsets.UTF_8)
+            );
+
+            return( link );
+        }); 
+
+        // linkCol.setCellFactory(
+
+        // );
+        // linkCol.setCellValueFactory(cellData -> {
+        //     Track track = cellData.getValue();
+        //     Hyperlink link = new Hyperlink(
+        //         "https://www.youtube.com/results?search_query=" +
+        //         URLEncoder.encode(track.getName(),StandardCharsets.UTF_8) +
+        //         "+" +
+        //         URLEncoder.encode(track.getArtist(),StandardCharsets.UTF_8)
+        //     );
+        //     link.setOnAction(new EventHandler<ActionEvent>() {
+        //         @Override 
+        //         public void handle(ActionEvent actionEvent){
+        //             System.out.println(
+        //                 ((Hyperlink)actionEvent.getSource()).getText()
+        //             );
+        //         }
+        //     });
+        // });
+
+        table.getColumns().add(nameCol);
+        table.getColumns().add(artistCol);
+        table.getColumns().add(albumCol);
+        table.getColumns().add(durationCol);
+        table.getColumns().add(linkCol);
         ObservableList<Track> observableTracks = FXCollections.observableList(tracks);
         table.setItems(observableTracks);
 
         this.setContent(
             new StackPane(
-                table
+                table,
+                new Hyperlink("hi")
             )
         );
 
