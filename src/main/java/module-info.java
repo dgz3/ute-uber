@@ -9,5 +9,6 @@ module com.dgz3 {
     requires com.fasterxml.jackson.core;
     requires javafx.media;
     exports com.dgz3.component.jsontab.model to com.fasterxml.jackson.databind;
+    opens com.dgz3.component.jsontab.model to javafx.base;
     exports com.dgz3;
 }

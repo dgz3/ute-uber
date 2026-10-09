@@ -10,12 +10,21 @@ import com.dgz3.pattern.Observer;
 import com.dgz3.pattern.Subject;
 
 import javafx.geometry.Pos;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -27,6 +36,8 @@ public class JsonFileTab extends Tab implements Subject
     private TextField fileTextField;
     private List<Observer> observers = new ArrayList<Observer>();
     private File selectedFile;
+    private List<Track> tracks = null;
+
 
     private JsonFileChooserButton jsonFileSelector;
     private ChooserObserver chooserObserver;
@@ -110,15 +121,35 @@ public class JsonFileTab extends Tab implements Subject
     {
         if (selectedFile != null) {
             FileJsonParseService service = new FileJsonParseService();
-            List<Track> tracks = service.parse(selectedFile);
+            tracks = service.parse(selectedFile);
             for (var track : tracks){
                 System.out.printf(
                     "name: %s\nartist: %s\nalbum: %s\nduration: %s\n"
-                    // ,track.getName(),track.getArtist(),track.getAlbum(),track.getDuration()
-                    ,track.name(),track.artist(),track.album(),track.duration()
+                    ,track.getName(),track.getArtist(),track.getAlbum(),track.getDuration()
+                    // ,track.name(),track.artist(),track.album(),track.duration()
                 );
             }
         }
+
+        TableView<Track> table = new TableView<>();
+        TableColumn<Track,String> nameCol = new TableColumn<>("Name");
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        TableColumn<Track,String> artistCol = new TableColumn<>("Artist");
+        artistCol.setCellValueFactory(new PropertyValueFactory<>("artist"));
+        TableColumn<Track,String> albumCol = new TableColumn<>("Album");
+        albumCol.setCellValueFactory(new PropertyValueFactory<>("album"));
+        TableColumn<Track,String> durationCol = new TableColumn<>("Duration");
+        durationCol.setCellValueFactory(new PropertyValueFactory<>("duration"));
+        table.getColumns().addAll(nameCol,artistCol,albumCol,durationCol);
+        ObservableList<Track> observableTracks = FXCollections.observableList(tracks);
+        table.setItems(observableTracks);
+
+        this.setContent(
+            new StackPane(
+                table
+            )
+        );
+
         this.setText(selectedFile.getName());
         this.setClosable(true);
     }
