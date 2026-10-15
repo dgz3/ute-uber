@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Button?>
+
+<Tab 
+xmlns="http://javafx.com"
+xmlns:fx="http://javafx.com"
+fx:controller="com.dgz3.controllers.tabjson.TabJsonController"
+closable="false"
+text="Json">
+  <TabPane fx:id="tabPane"/>
+</Tab>

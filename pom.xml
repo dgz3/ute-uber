@@ -3,7 +3,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.dgz3</groupId>
-    <artifactId>ute-uber</artifactId>
+    <artifactId>app</artifactId>
     <version>1.0.0</version>
 
     <properties>
@@ -16,7 +16,13 @@
     <dependencies>
         <dependency>
             <groupId>org.openjfx</groupId>
-            <artifactId>javafx-web</artifactId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>21</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
             <version>21</version>
         </dependency>
 
@@ -30,13 +36,12 @@
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
             <version>1.23.2</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 
 
     <build>
-        <finalName>UberUte</finalName>
+        <finalName>MainApplication</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>

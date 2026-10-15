@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
+
+<GridPane
+xmlns="http://javafx.com"
+xmlns:fx="http://javafx.com"
+fx:controller="com.dgz3.controllers.tabjson.SubTabContentController"
+fx:id="subGridPane"
+alignment="center"
+hgap="10"
+vgap="10">
+
+<!-- gridLinesVisible="true" -->
+
+  <padding>
+    <Insets top="15" right="15" bottom="15" left="15"/>
+  </padding>
+
+  <children>
+    <Text 
+    text="Select a file" 
+    GridPane.columnIndex="0" 
+    GridPane.rowIndex="0"
+    GridPane.columnSpan="2"
+    GridPane.rowSpan="1"/>
+
+    <Label 
+    text="Selected file"
+    GridPane.columnIndex="0"
+    GridPane.rowIndex="1"/>
+
+    <TextField
+    fx:id="fileTextField"
+    disable="true"
+    GridPane.columnIndex="1" 
+    GridPane.rowIndex="1"/>
+
+    <HBox 
+    GridPane.columnIndex="1" 
+    GridPane.rowIndex="2"
+    alignment="center_right"
+    spacing="10">
+      <Button 
+      fx:id="fileChooserButton" 
+      text="Choose"/>
+
+      <Button 
+      fx:id="fileLoaderButton" 
+      text="Load"
+      onAction="#loadFile"/>
+    </HBox>
+  </children>
+
+</GridPane>
