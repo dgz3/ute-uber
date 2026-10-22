@@ -7,7 +7,7 @@
 <Tab 
 xmlns="http://javafx.com"
 xmlns:fx="http://javafx.com"
-fx:controller="com.dgz3.controllers.tabjson.TabJsonController"
+fx:controller="com.dgz3.controllers.tabjson.JsonTabController"
 closable="false"
 text="Json">
   <TabPane fx:id="tabPane"/>

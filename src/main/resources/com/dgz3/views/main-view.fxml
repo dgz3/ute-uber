@@ -8,6 +8,6 @@ xmlns:fx="http://javafx.com"
 fx:id="mainTabPane"
 fx:controller="com.dgz3.controllers.MainController">
 
-  <fx:include source="tabjson/tab-json.fxml"/>
+  <fx:include source="tabjson/json-tab.fxml"/>
 
 </TabPane>

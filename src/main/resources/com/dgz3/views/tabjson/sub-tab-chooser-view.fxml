@@ -11,7 +11,7 @@
 <GridPane
 xmlns="http://javafx.com"
 xmlns:fx="http://javafx.com"
-fx:controller="com.dgz3.controllers.tabjson.SubTabContentController"
+fx:controller="com.dgz3.controllers.tabjson.SubTabChooserController"
 fx:id="subGridPane"
 alignment="center"
 hgap="10"
@@ -49,11 +49,13 @@ vgap="10">
     spacing="10">
       <Button 
       fx:id="fileChooserButton" 
-      text="Choose"/>
+      text="Choose"
+      onAction="#chooseFile"/>
 
       <Button 
       fx:id="fileLoaderButton" 
       text="Load"
+      disable="true"
       onAction="#loadFile"/>
     </HBox>
   </children>

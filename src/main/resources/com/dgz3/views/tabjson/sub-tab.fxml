@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Tab?>
+
+<Tab
+xmlns="http://javafx.com/???"
+xmlns:fx="http//javafx.com/???"
+fx:id="tab"
+fx:controller="com.dgz3.controllers.tabjson.SubTabController"
+>
+</Tab>

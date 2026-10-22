@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TextField?>
+
+
+<VBox
+xmlns="http://javafx.com"
+xmlns:fx="http://javafx.com"
+fx:controller="com.dgz3.controllers.tabjson.SubTabTracksViewController"
+spacing="10"
+alignment="center"
+prefWidth="400"
+prefHeight="300">
+
+  <TableView 
+  fx:id="tracksTable">
+
+    <columns>
+      <TableColumn 
+      fx:id="nameColumn" 
+      text="Name" 
+      prefWidth="100"/>
+
+      <TableColumn 
+      fx:id="artistColumn" 
+      text="Artist" 
+      prefWidth="200" />
+
+      <TableColumn 
+      fx:id="albumColumn" 
+      text="Album" 
+      prefWidth="100"/>
+
+      <TableColumn 
+      fx:id="durationColumn" 
+      text="Duration" 
+      prefWidth="200"/>
+    </columns>
+
+    <!-- Optional: Prevents extra empty columns from showing -->
+    <columnResizePolicy>
+        <TableView 
+        fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+    </columnResizePolicy>
+
+  </TableView>
+
+</VBox>
