@@ -38,6 +38,11 @@ prefHeight="300">
       fx:id="durationColumn" 
       text="Duration" 
       prefWidth="200"/>
+
+      <TableColumn 
+      fx:id="linkColumn" 
+      text="YT Link" 
+      prefWidth="200"/>
     </columns>
 
     <!-- Optional: Prevents extra empty columns from showing -->
