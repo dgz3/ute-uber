@@ -27,6 +27,8 @@ import javafx.util.Callback;
 public class SubTabTracksViewController 
 {
     private JsonFileParseService parseService;
+    private Runnable rowClickCallback;
+    private List<Track> tracks;
 
     @FXML
     private TableView<Track> tracksTable;
@@ -40,8 +42,6 @@ public class SubTabTracksViewController
     private TableColumn<Track,String> durationColumn;
     @FXML
     private TableColumn<Track,String> linkColumn;
-
-    List<Track> tracks;
 
     @FXML
     private void initialize()
@@ -81,6 +81,11 @@ public class SubTabTracksViewController
         });
     }
 
+    public void setOnRowClickLoadYouTubeView(Runnable rowClickCallback)
+    {
+        this.rowClickCallback = rowClickCallback;
+    }
+
     private void handleRowClick(Track clickedItem)
     {
         System.out.println(
@@ -88,6 +93,7 @@ public class SubTabTracksViewController
             + "\n" +
             "artist: " + clickedItem.getArtist()
         );
+        rowClickCallback.run();
     }
 
     public void parseFile(File file)

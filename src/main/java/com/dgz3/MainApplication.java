@@ -20,8 +20,8 @@ public class MainApplication extends Application
 
         Scene scene = new Scene(root);
 
-        stage.setMinHeight(300);
-        stage.setMinWidth(400);
+        stage.setMinHeight(600);
+        stage.setMinWidth(800);
         stage.setTitle("TITLE");
         stage.setScene(scene);
         stage.show();

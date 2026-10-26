@@ -2,6 +2,7 @@ package com.dgz3.controllers.tabjson;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -22,6 +23,7 @@ public class SubTabController
 
     private SubTabChooserController chooserController;
     private SubTabTracksViewController tracksController;
+    private SubTabYouTubeController youtubeController;
 
     @FXML
     private void initialize()
@@ -34,18 +36,34 @@ public class SubTabController
 
     // TODO: pass this more gracefully for christs sake
     // JsonTabController -> SubTabController -> SubTabChooserController
-    public void setOnLoadCreateNewTab(Runnable callback)
+    public void setOnLoadCreateNewTab(Runnable newTabCallback)
     {
         chooserController.setOnLoadCreateNewTab(() -> {
             VBox vbox = (VBox) loadFXMLContent(ContentViewFlag.TRACKS);
             if (vbox != null) {
-                tab.setClosable(true);
-                tab.setText(chooserController.getFileName());
-                tracksController.parseFile(chooserController.getFile());
-                tab.setContent(vbox);
-                callback.run();
+                switchContentToTracksView(vbox);
+                newTabCallback.run();
             }
         });
+    }
+
+    private void switchContentToTracksView(VBox vbox)
+    {
+        tab.setClosable(true);
+        tab.setText(chooserController.getFileName());
+        tracksController.setOnRowClickLoadYouTubeView( () -> {
+            switchContentToYouTubeView();
+        });
+        tracksController.parseFile(chooserController.getFile());
+        tab.setContent(vbox);
+    }
+
+    private void switchContentToYouTubeView()
+    {
+        ScrollPane scrollPane = (ScrollPane) loadFXMLContent(ContentViewFlag.YOUTUBE);
+        if (scrollPane != null){
+            tab.setContent(scrollPane);
+        }
     }
 
     private Object loadFXMLContent(ContentViewFlag flag)
@@ -66,7 +84,7 @@ public class SubTabController
             switch (flag) {
                 case CHOOSER -> chooserController = loader.getController();
                 case TRACKS  -> tracksController  = loader.getController();
-                case YOUTUBE -> loader.getController();
+                case YOUTUBE -> youtubeController = loader.getController();
             }
         } catch(Exception e) {
             System.out.printf(
