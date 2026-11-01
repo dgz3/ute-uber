@@ -39,6 +39,7 @@ public class YouTubeParseService
         Document doc = Jsoup.parse(body);
         Element elem = doc.selectFirst("script[nonce]:containsData(ytInitialData)");
 
+        String nodeBody = null;
         try {
 
             if (elem != null) {
@@ -68,9 +69,11 @@ public class YouTubeParseService
                 if (contents.isArray()){
                     int nodeCount=0;
                     JsonNode nodeRoot = null;
+
                     for (var node : contents) {
 
                         System.out.printf("(%d) ", ++nodeCount);
+                        nodeBody = node.toPrettyString();
 
                         nodeRoot = node.path("videoRenderer");
                         if(!nodeRoot.isMissingNode()){
@@ -118,6 +121,7 @@ public class YouTubeParseService
             System.out.println(
                 e.getClass() + " " + e.getMessage()
             );
+            System.out.println(nodeBody);
         }
 
         return(fetchedVideos);
