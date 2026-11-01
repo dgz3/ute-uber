@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.control.TextField?>
@@ -37,9 +38,18 @@ vgap="10">
     alignment="center_left"
     spacing="10">
       <Label fx:id="title"  />
-      <Label fx:id="channel"/>
+
+      <Label fx:id="channel">
+      </Label>
+
       <Label fx:id="length" />
-      <Label fx:id="views"  />
+
+      <HBox
+      spacing="10">
+        <Label fx:id="views"    />
+        <Label fx:id="published"/>
+      </HBox>
+
     </VBox>
 
   </children>

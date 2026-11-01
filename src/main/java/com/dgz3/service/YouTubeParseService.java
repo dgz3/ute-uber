@@ -86,6 +86,7 @@ public class YouTubeParseService
                                 ,node.at("/videoRenderer/ownerText/runs/0/text").asText()
                                 ,node.at("/videoRenderer/ownerText/runs/0/navigationEndpoint/commandMetadata/webCommandMetaData/url").asText()
                                 ,node.at("/videoRenderer/thumbnail/thumbnails/0/url").asText()
+                                ,false
                             );
                             fetchedVideos.add(ytVideo);
                             continue;
@@ -98,9 +99,26 @@ public class YouTubeParseService
                                        .get(0)
                                        .path("horizontalShelfViewModel")
                                        .path("items");
-                            for (var item : nodeRoot) {
+                            for (var node2 : nodeRoot) {
+
+
+                                YouTubeVideo ytVideo = new YouTubeVideo(
+                                     node2.at("/lockupViewModel/metadata/lockupMetadataViewModel/title/content").asText()
+                                    ,node2.at("/lockupViewModel/itemPlayback/inlinePlayerData/onSelect/innertubeCommand/watchEndpoint/videoId").asText()
+                                    ,node2.at("/lockupViewModel/contentImage/thumbnailViewModel/overlays/0/thumbnailBottomOverlayViewModel/badges/thumbnailBadgeViewModel/text").asText()
+                                    ,node2.at("/lockupViewModel/metadata/lockupMetadataViewModel/metadata/contentMetadataViewModel/metadataRows/2/text/content").asText()
+                                    ,node2.at("/lockupViewModel/metadata/lockupMetadataViewModel/metadata/contentMetadataViewModel/metadataRows/1/text/content").asText()
+                                    ,node2.at("/lockupViewModel/metadata/lockupMetadataViewModel/metadata/contentMetadataViewModel/metadataRows/0/text/content").asText()
+                                    ,node2.at("/lockupViewModel/metadata/lockupMetadataViewModel/metadata/contentMetadataViewModel/metadataRows/0/commandRuns/0/onTap/innertubeCommand/browseEndpoint/canonicalBaseUrl").asText()
+                                    ,node2.at("/lockupViewModel/contentImage/thumbnailViewModel/image/sources/0/url").asText()
+                                    ,true
+                                );
+                                fetchedVideos.add(ytVideo);
+
+
+
                                 System.out.printf("  - %s\n"
-                                    ,item
+                                    ,node2
                                     .path("lockupViewModel")
                                     .path("metadata")
                                     .path("lockupMetadataViewModel")
@@ -108,6 +126,8 @@ public class YouTubeParseService
                                     .path("content")
                                     .toString()
                                 );
+
+
                             }
                             continue;
                         }

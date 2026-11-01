@@ -8,7 +8,8 @@ public record YouTubeVideo(
     String videoViewCount,
     String videoChannelName,
     String videoChannelUrl,
-    String videoThumbnailUrl
+    String videoThumbnailUrl,
+    boolean isOfficialCard
 ) {
 
 }
