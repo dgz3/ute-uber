@@ -29,6 +29,7 @@ public class SubTabTracksViewController
     private JsonFileParseService parseService;
     private Runnable rowClickCallback;
     private List<Track> tracks;
+    private Track selectedTrack;
 
     @FXML
     private TableView<Track> tracksTable;
@@ -93,7 +94,13 @@ public class SubTabTracksViewController
             + "\n" +
             "artist: " + clickedItem.getArtist()
         );
+        selectedTrack = clickedItem;
         rowClickCallback.run();
+    }
+
+    public Track getTrack()
+    {
+        return(selectedTrack);
     }
 
     public void parseFile(File file)

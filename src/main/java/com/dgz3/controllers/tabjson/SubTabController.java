@@ -62,6 +62,7 @@ public class SubTabController
     {
         ScrollPane scrollPane = (ScrollPane) loadFXMLContent(ContentViewFlag.YOUTUBE);
         if (scrollPane != null){
+            youtubeController.searchYoutube(tracksController.getTrack());
             tab.setContent(scrollPane);
         }
     }

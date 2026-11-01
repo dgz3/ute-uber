@@ -8,6 +8,7 @@ open module com.dgz3 {
     requires com.fasterxml.jackson.databind;
     requires com.fasterxml.jackson.core;
     requires java.scripting;
+    requires java.desktop;
 
     exports com.dgz3;
 }
