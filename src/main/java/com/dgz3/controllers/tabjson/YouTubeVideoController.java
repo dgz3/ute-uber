@@ -19,6 +19,8 @@ public class YouTubeVideoController
     @FXML private Label published;
     @FXML private ImageView thumbnail;
 
+    private YouTubeVideo video;
+
     @FXML
     private void initialize()
     {
@@ -27,8 +29,10 @@ public class YouTubeVideoController
         thumbnail.setPreserveRatio(true);
     }
 
-    public void populateView(YouTubeVideo video)
+    public void populateView(YouTubeVideo _video)
     {
+        video = _video;
+
         title.setText(video.videoName());
         channel.setText(video.videoChannelName());
         length.setText(video.videoLength());
@@ -43,5 +47,10 @@ public class YouTubeVideoController
                 " , channel -> "+ 
                 video.videoChannelName());
         }
+    }
+
+    public YouTubeVideo getVideo()
+    {
+        return(video);
     }
 }

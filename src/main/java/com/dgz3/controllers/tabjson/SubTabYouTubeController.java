@@ -15,6 +15,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
@@ -57,7 +58,7 @@ public class SubTabYouTubeController
                     if (focusIndex < ytVidList.size()-1) focusIndex += 1;
                     break;
                 default:
-                    break;
+                    return;
             }
 
             ytVidList.get(focusIndex).requestFocus();
@@ -102,8 +103,6 @@ public class SubTabYouTubeController
             return;
         }
 
-        /* todo: undetermined if this is needed (id:qc1)*/
-        // int count = 0;
         for (var video : fetchedVideos) {
             System.out.printf(
                 "-------------------\n"+
@@ -120,7 +119,25 @@ public class SubTabYouTubeController
                 );
                 GridPane content = loader.load();
 
+                YouTubeVideoController ytController = loader.getController();
+
+                content.setUserData(video);
                 content.setFocusTraversable(false);
+
+                content.setOnMouseClicked( (clickEvent) -> {
+                    System.out.println(
+                        ytController.getVideo().videoId()
+                    );
+                    content.requestFocus();
+
+                    focusIndex = 0;
+                    for(var vid : ytVidList) {
+                        if ( ((YouTubeVideo)vid.getUserData()).videoId() == ytController.getVideo().videoId() ){
+                            break;
+                        }
+                        ++focusIndex;
+                    }
+                });
 
                 content.focusedProperty().addListener(
                     (observable,oldValue,newValue) -> {
@@ -136,14 +153,6 @@ public class SubTabYouTubeController
                     }
                 );
 
-                /* todo: undetermined if this is needed (id:qc1)*/
-                //if (count == 0){
-                //    content.requestFocus();
-                //    focusIndex = count;
-                //}
-
-                YouTubeVideoController ytController 
-                    = loader.getController();
                 ytController.populateView(video);
                 ytVidList.add(content);
             } catch(Exception e){
@@ -153,8 +162,6 @@ public class SubTabYouTubeController
                     ,e.getMessage()
                 );
             }
-            /* todo: undetermined if this is needed (id:qc1)*/
-            //count += 1;
         }
 
         /* focus first node after finished rendering */
