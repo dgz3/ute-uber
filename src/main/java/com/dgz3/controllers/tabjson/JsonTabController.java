@@ -16,6 +16,7 @@ public class JsonTabController
     @FXML
     public void initialize()
     {
+        tabPane.setFocusTraversable(false);
         createNewTab();
     }
 

@@ -6,10 +6,12 @@ import com.dgz3.component.jsontab.model.Track;
 import com.dgz3.model.YouTubeVideo;
 import com.dgz3.service.YouTubeParseService;
 
+import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyCode;
@@ -19,7 +21,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 
 public class SubTabYouTubeController 
 {
@@ -34,100 +35,133 @@ public class SubTabYouTubeController
     private ScrollPane scrollPane;
 
     @FXML
-    private VBox vboxList;
+    private VBox ytVBox;
+
+    private ObservableList<Node> ytVidList;
 
     @FXML
     private void initialize()
     {
         parseService = new YouTubeParseService();
-        vboxList.setOnKeyPressed( event -> {
+        ytVidList = ytVBox.getChildren();
+        ytVBox.setOnKeyPressed( event -> {
+            if (ytVidList.size() == 0) return;
+
             switch(event.getCode()){
+                case KeyCode.UP:
                 case KeyCode.K:
-                    if (vboxList.getChildren().size() > 0){
-                        if (focusIndex > 0) {
-                            vboxList.getChildren().get(--focusIndex).requestFocus();
-                            scrollPane.setVvalue((double)(focusIndex)/(vboxList.getChildren().size()-1));
-                        }
-                    }
+                    if (focusIndex > 0) focusIndex -= 1;
                     break;
+                case KeyCode.DOWN:
                 case KeyCode.J:
-                    if (vboxList.getChildren().size() > 0){
-                        if (focusIndex < vboxList.getChildren().size()-1) {
-                            vboxList.getChildren().get(++focusIndex).requestFocus();
-                            scrollPane.setVvalue((double)(focusIndex)/(vboxList.getChildren().size()-1));
-                        }
-                    }
+                    if (focusIndex < ytVidList.size()-1) focusIndex += 1;
                     break;
                 default:
                     break;
             }
+
+            ytVidList.get(focusIndex).requestFocus();
+            scrollPane.setVvalue((double)(focusIndex)/(ytVidList.size()-1));
+
+            Bounds nodeBounds = scrollPane.getContent().sceneToLocal(
+                ytVidList.get(focusIndex).localToScene(ytVidList.get(focusIndex).getBoundsInLocal())
+            );
+            double nodeTop = nodeBounds.getMinY();
+            double nodeBottom = nodeBounds.getMaxY();
+
+            System.out.printf("vp: %g , content: %g , vvalue: %g , nodeTop: %g , nodeBottom: %g\n",
+                 scrollPane.getViewportBounds().getHeight()
+                ,scrollPane.getContent().getLayoutBounds().getHeight()
+                ,scrollPane.getVvalue()
+                ,nodeTop
+                ,nodeBottom
+            );
         });
+
+    }
+
+    public void resetFocus()
+    {
+        System.err.println("request!! -> " + focusIndex);
+        ytVidList.get(focusIndex).requestFocus();
     }
 
     public void searchYoutube(Track track)
     {
-        if (track != null){
-            List<YouTubeVideo> fetchedVideos = parseService.parse(track);
-            if (fetchedVideos.size() > 0) {
-
-
-                int count = 0;
-                for (var video : fetchedVideos) {
-                    System.out.printf(
-                        "-------------------\n"+
-                        "name: %s\nid: %s\nlength: %s\npublished: %s\n"+
-                        "view count: %s\nchannel: %s\nchannel url: %s\nthumnail: %s\n"+
-                        "-------------------\n",
-                        video.videoName(),video.videoId(),video.videoLength(),video.videoPublished(),
-                        video.videoViewCount(),video.videoChannelName(),video.videoChannelUrl(),video.videoThumbnailUrl()
-                    );
-
-
-
-                    try {
-                        FXMLLoader loader = new FXMLLoader(
-                            getClass().getResource(VIDEO_VIEW_PATH)
-                        );
-                        GridPane content = loader.load();
-
-                        content.setFocusTraversable(true);
-
-                        content.focusedProperty().addListener(
-                            (observable,oldValue,newValue) -> {
-                                content.setBackground(
-                                    new Background(
-                                        new BackgroundFill(
-                                            (newValue?Color.KHAKI:Color.TRANSPARENT),
-                                            null,
-                                            null)
-                                    )
-                                );
-                                setFocusTextColor(content,newValue);
-                            }
-                        );
-
-                        if (count == 0){
-                            content.requestFocus();
-                            focusIndex = count;
-                        }
-
-                        YouTubeVideoController ytController 
-                            = loader.getController();
-                        ytController.populateView(video);
-                        vboxList.getChildren().add(content);
-                    } catch(Exception e){
-                        System.out.printf(
-                            "Error loading YouTube Video View : (%s) %s\n"
-                            ,e.getClass()
-                            ,e.getMessage()
-                        );
-                    }
-                    ++count;
-                }
-            }
-        }else{
+        if (track == null){
+            /* todo: error / usage */
             System.out.println("null track");
+            return;
         }
+
+        List<YouTubeVideo> fetchedVideos = parseService.parse(track);
+
+        if (fetchedVideos.size() == 0){
+            /* todo: error / usage */
+            System.out.println("null fetchedVideos");
+            return;
+        }
+
+        /* todo: undetermined if this is needed (id:qc1)*/
+        // int count = 0;
+        for (var video : fetchedVideos) {
+            System.out.printf(
+                "-------------------\n"+
+                "name: %s\nid: %s\nlength: %s\npublished: %s\n"+
+                "view count: %s\nchannel: %s\nchannel url: %s\nthumnail: %s\n"+
+                "-------------------\n",
+                video.videoName(),video.videoId(),video.videoLength(),video.videoPublished(),
+                video.videoViewCount(),video.videoChannelName(),video.videoChannelUrl(),video.videoThumbnailUrl()
+            );
+
+            try {
+                FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource(VIDEO_VIEW_PATH)
+                );
+                GridPane content = loader.load();
+
+                content.setFocusTraversable(false);
+
+                content.focusedProperty().addListener(
+                    (observable,oldValue,newValue) -> {
+                        content.setBackground(
+                            new Background(
+                                new BackgroundFill(
+                                    (newValue?Color.KHAKI:Color.TRANSPARENT),
+                                    null,
+                                    null)
+                            )
+                        );
+                        setFocusTextColor(content,newValue);
+                    }
+                );
+
+                /* todo: undetermined if this is needed (id:qc1)*/
+                //if (count == 0){
+                //    content.requestFocus();
+                //    focusIndex = count;
+                //}
+
+                YouTubeVideoController ytController 
+                    = loader.getController();
+                ytController.populateView(video);
+                ytVidList.add(content);
+            } catch(Exception e){
+                System.out.printf(
+                    "Error loading YouTube Video View : (%s) %s\n"
+                    ,e.getClass()
+                    ,e.getMessage()
+                );
+            }
+            /* todo: undetermined if this is needed (id:qc1)*/
+            //count += 1;
+        }
+
+        /* focus first node after finished rendering */
+        Platform.runLater( () -> {
+            ytVidList.get(0).requestFocus();
+        });
+
     }
 
     public void setFocusTextColor(Pane pane,Boolean newValue)

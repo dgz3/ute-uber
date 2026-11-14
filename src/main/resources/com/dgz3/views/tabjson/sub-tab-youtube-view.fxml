@@ -10,7 +10,7 @@ fx:id="scrollPane"
 fx:controller="com.dgz3.controllers.tabjson.SubTabYouTubeController">
 
   <VBox
-  fx:id="vboxList">
+  fx:id="ytVBox">
   </VBox>
 
 </ScrollPane>

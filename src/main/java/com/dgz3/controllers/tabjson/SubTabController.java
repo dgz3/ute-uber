@@ -1,5 +1,6 @@
 package com.dgz3.controllers.tabjson;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ScrollPane;
@@ -34,8 +35,6 @@ public class SubTabController
         }
     }
 
-    // TODO: pass this more gracefully for christs sake
-    // JsonTabController -> SubTabController -> SubTabChooserController
     public void setOnLoadCreateNewTab(Runnable newTabCallback)
     {
         chooserController.setOnLoadCreateNewTab(() -> {
@@ -61,10 +60,15 @@ public class SubTabController
     private void switchContentToYouTubeView()
     {
         ScrollPane scrollPane = (ScrollPane) loadFXMLContent(ContentViewFlag.YOUTUBE);
-        if (scrollPane != null){
-            youtubeController.searchYoutube(tracksController.getTrack());
-            tab.setContent(scrollPane);
-        }
+        if (scrollPane == null) return;
+
+        youtubeController.searchYoutube(tracksController.getTrack());
+        tab.setOnSelectionChanged(event -> {
+            if (!tab.isSelected()) return;
+            /* let ui finish rending the tab content first */
+            Platform.runLater( () -> youtubeController.resetFocus() );
+        });
+        tab.setContent(scrollPane);
     }
 
     private Object loadFXMLContent(ContentViewFlag flag)
